@@ -142,7 +142,7 @@ resource "aws_iam_role" "iam_for_step_function" {
 //create step functions state machine from external file
 resource "aws_sfn_state_machine" "my_state_machine" {
   name = "my_state_machine"
+  //arn:aws:lambda:eu-central-1:833915806704:function:HelloWorld
   role_arn = aws_iam_role.iam_for_step_function.arn
-  //get definition from external file
   definition = file("stepfunc.json.asl")
 }

@@ -4,8 +4,7 @@
     "States": {
       "PlaceOrder": {
         "Comment": "A Pass state passes its input to its output, without performing work. Pass states are useful when constructing and debugging state machines.",
-        "Type": "Task",
-        "Resource": "myLambdaFunc",
+        "Type": "Pass",
         "Next": "Parallel State"
       },
       
