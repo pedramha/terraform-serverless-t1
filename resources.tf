@@ -58,7 +58,6 @@ resource "aws_lambda_function" "myLambdaFunc" {
   handler = "hello.handler"
 
   source_code_hash = data.archive_file.lambda_hello_world.output_base64sha256
-
   role = aws_iam_role.iam_for_lambda.arn
 }
 
@@ -138,23 +137,6 @@ resource "aws_iam_role" "iam_for_step_function" {
   })
 }
 
-//create a step function state machine
-# resource "aws_step_functions_state_machine" "my_state_machine" {
-#   name = "my_state_machine"
-#   definition = <<EOF
-# {
-#   "Comment": "This is a test state machine.",
-#   "StartAt": "HelloWorld",
-#   "States": {
-#     "HelloWorld": {
-#       "Type": "Pass",
-#       "Comment": "This is the start state.",
-#       "End": true
-#     }
-#   }
-# }
-# EOF
-# }
 # terraform graph | dot -Tsvg > graph.svg
 
 //create step functions state machine from external file
