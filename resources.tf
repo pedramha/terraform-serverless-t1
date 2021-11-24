@@ -124,18 +124,26 @@ resource "aws_lambda_permission" "api_gw" {
 //create a step function
 resource "aws_iam_role" "iam_for_step_function" {
   name = "iam_for_step_function"
-  assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [{
-      "Action" : "sts:AssumeRole",
-      "Principal" : {
-        "Service" : "states.amazonaws.com"
-      },
-      "Effect" : "Allow",
-      "Sid" : ""
-    }]
-  })
+  assume_role_policy = file("stepfuncpolicy.json")
+  # jsonencode({
+  #   "Version" : "2012-10-17",
+  #   "Statement" : [{
+  #     "Action" : "sts:AssumeRole",
+  #     "Principal" : {
+  #       "Service" : "states.amazonaws.com"
+  #     },
+  #     "Effect" : "Allow",
+  #     "Sid" : ""
+  #   }]
+  # })
 }
+
+# resource "aws_iam_role" "test" {
+#   name= "test"
+#   assume_role_policy = file("test.json")
+# }
+
+//create an external iam role for lambda functions to dynamodb
 
 # terraform graph | dot -Tsvg > graph.svg
 
