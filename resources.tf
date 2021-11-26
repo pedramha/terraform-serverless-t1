@@ -4,9 +4,6 @@ data "archive_file" "lambda_hello_world" {
 
   source_dir  = "${path.module}/hello-world"
   output_path = "${path.module}/hello-world.zip"
-  tags        = {
-    "Name" = "hello-world"
-  }
 }
 
 resource "aws_s3_bucket" "lambda_bucket" {
@@ -21,9 +18,6 @@ resource "aws_s3_bucket_public_access_block" "lambda_bucket_public_access" {
   bucket = aws_s3_bucket.lambda_bucket.id
   block_public_acls    = true
   block_public_policy  = true
-  tags        = {
-    "Name" = "hello-world"
-  }
 }
 
 
@@ -61,9 +55,6 @@ resource "aws_iam_role" "iam_for_lambda" {
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
   role       = aws_iam_role.iam_for_lambda.id
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-  tags        = {
-    "Name" = "hello-world"
-  }
 }
 
 resource "aws_lambda_function" "myLambdaFunc" {
@@ -131,9 +122,6 @@ resource "aws_apigatewayv2_integration" "hello_world" {
   integration_uri    = aws_lambda_function.myLambdaFunc.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
-  tags        = {
-    "Name" = "hello-world"
-  }
 }
 
 resource "aws_apigatewayv2_route" "hello_world" {
@@ -141,9 +129,7 @@ resource "aws_apigatewayv2_route" "hello_world" {
 
   route_key = "GET /hello"
   target    = "integrations/${aws_apigatewayv2_integration.hello_world.id}"
-  tags        = {
-    "Name" = "hello-world"
-  }
+
 }
 
 resource "aws_lambda_permission" "api_gw" {
@@ -153,9 +139,6 @@ resource "aws_lambda_permission" "api_gw" {
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.terraapi.execution_arn}/*/*"
-  tags        = {
-    "Name" = "hello-world"
-  }
 }
 
 //create a step function
