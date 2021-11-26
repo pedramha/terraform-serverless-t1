@@ -4,17 +4,26 @@ data "archive_file" "lambda_hello_world" {
 
   source_dir  = "${path.module}/hello-world"
   output_path = "${path.module}/hello-world.zip"
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 resource "aws_s3_bucket" "lambda_bucket" {
   bucket = "kooooppp9i"
   acl           = "private"
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "lambda_bucket_public_access" {
   bucket = aws_s3_bucket.lambda_bucket.id
   block_public_acls    = true
   block_public_policy  = true
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 
@@ -25,11 +34,17 @@ resource "aws_s3_bucket_object" "lambda_hello_world" {
   source = data.archive_file.lambda_hello_world.output_path
 
   etag = filemd5(data.archive_file.lambda_hello_world.output_path)
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 
 resource "aws_iam_role" "iam_for_lambda" {
   name = "iam_for_lambda"
+  tags        = {
+    "Name" = "hello-world"
+  }
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [{
@@ -46,6 +61,9 @@ resource "aws_iam_role" "iam_for_lambda" {
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
   role       = aws_iam_role.iam_for_lambda.id
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 resource "aws_lambda_function" "myLambdaFunc" {
@@ -59,6 +77,9 @@ resource "aws_lambda_function" "myLambdaFunc" {
 
   source_code_hash = data.archive_file.lambda_hello_world.output_base64sha256
   role = aws_iam_role.iam_for_lambda.arn
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 
@@ -73,6 +94,9 @@ resource "aws_lambda_function" "myLambdaFunc" {
 resource "aws_apigatewayv2_api" "terraapi" {
   name          = "lambda api"
   protocol_type = "HTTP"
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 //create a stage for the api gateway
@@ -82,6 +106,9 @@ resource "aws_apigatewayv2_stage" "terraapi_stage" {
   # deployment_id = aws_apigatewayv2_deployment.terraapi.id
   auto_deploy   = true
   description   = "this is the prod stage"
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 # //create lambda integration
@@ -104,6 +131,9 @@ resource "aws_apigatewayv2_integration" "hello_world" {
   integration_uri    = aws_lambda_function.myLambdaFunc.invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 resource "aws_apigatewayv2_route" "hello_world" {
@@ -111,6 +141,9 @@ resource "aws_apigatewayv2_route" "hello_world" {
 
   route_key = "GET /hello"
   target    = "integrations/${aws_apigatewayv2_integration.hello_world.id}"
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 resource "aws_lambda_permission" "api_gw" {
@@ -120,12 +153,18 @@ resource "aws_lambda_permission" "api_gw" {
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.terraapi.execution_arn}/*/*"
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
 
 //create a step function
 resource "aws_iam_role" "iam_for_step_function" {
   name = "iam_for_step_function"
   assume_role_policy = file("stepfuncpolicy.json")
+  tags        = {
+    "Name" = "hello-world"
+  }
   # jsonencode({
   #   "Version" : "2012-10-17",
   #   "Statement" : [{
@@ -154,4 +193,7 @@ resource "aws_sfn_state_machine" "my_state_machine" {
   //arn:aws:lambda:eu-central-1:833915806704:function:HelloWorld
   role_arn = aws_iam_role.iam_for_step_function.arn
   definition = file("stepfunc.json.asl")
+  tags        = {
+    "Name" = "hello-world"
+  }
 }
