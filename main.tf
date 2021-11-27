@@ -142,24 +142,24 @@ resource "aws_lambda_permission" "api_gw" {
 }
 
 //create a step function
-resource "aws_iam_role" "iam_for_step_function" {
-  name = "iam_for_step_function"
-  assume_role_policy = file("stepfuncpolicy.json")
-  tags        = {
-    "Name" = "hello-world"
-  }
-  # jsonencode({
-  #   "Version" : "2012-10-17",
-  #   "Statement" : [{
-  #     "Action" : "sts:AssumeRole",
-  #     "Principal" : {
-  #       "Service" : "states.amazonaws.com"
-  #     },
-  #     "Effect" : "Allow",
-  #     "Sid" : ""
-  #   }]
-  # })
-}
+# resource "aws_iam_role" "iam_for_step_function" {
+#   name = "iam_for_step_function"
+#   assume_role_policy = file("stepfuncpolicy.json")
+#   tags        = {
+#     "Name" = "hello-world"
+#   }
+#   # jsonencode({
+#   #   "Version" : "2012-10-17",
+#   #   "Statement" : [{
+#   #     "Action" : "sts:AssumeRole",
+#   #     "Principal" : {
+#   #       "Service" : "states.amazonaws.com"
+#   #     },
+#   #     "Effect" : "Allow",
+#   #     "Sid" : ""
+#   #   }]
+#   # })
+# }
 
 # resource "aws_iam_role" "test" {
 #   name= "test"
@@ -171,12 +171,75 @@ resource "aws_iam_role" "iam_for_step_function" {
 # terraform graph | dot -Tsvg > graph.svg
 
 //create step functions state machine from external file
-resource "aws_sfn_state_machine" "my_state_machine" {
-  name = "my_state_machine"
-  //arn:aws:lambda:eu-central-1:833915806704:function:HelloWorld
-  role_arn = aws_iam_role.iam_for_step_function.arn
-  definition = file("stepfunc.json.asl")
-  tags        = {
-    "Name" = "hello-world"
-  }
+# resource "aws_sfn_state_machine" "my_state_machine" {
+#   name = "my_state_machine"
+#   //arn:aws:lambda:eu-central-1:833915806704:function:HelloWorld
+#   role_arn = aws_iam_role.iam_for_step_function.arn
+#   definition = file("stepfunc.json.asl")
+#   tags        = {
+#     "Name" = "hello-world"
+#   }
+# }
+
+
+
+# new
+
+
+#====================================
+
+module "network" {
+  source = "./modules/network"
+
+  availability_zones = var.availability_zones
+  cidr_block         = var.cidr_block
 }
+
+#====================================
+
+# module "security" {
+#   source = "./modules/security"
+
+#   vpc_id         = module.network.vpc_id
+#   workstation_ip = var.workstation_ip
+
+#   depends_on = [
+#     module.network
+#   ]
+# }
+
+#====================================
+
+# module "bastion" {
+#   source = "./modules/bastion"
+
+#   instance_type = var.bastion_instance_type
+#   key_name      = var.key_name
+#   subnet_id     = module.network.public_subnets[0]
+#   sg_id         = module.security.bastion_sg_id
+
+#   depends_on = [
+#     module.network,
+#     module.security
+#   ]
+# }
+
+#====================================
+
+# module "storage" {
+#   source = "./modules/storage"
+
+#   instance_type = var.db_instance_type
+#   key_name      = var.key_name
+#   subnet_id     = module.network.private_subnets[0]
+#   sg_id         = module.security.mongodb_sg_id
+
+#   depends_on = [
+#     module.network,
+#     module.security
+#   ]
+# }
+
+#====================================
+
+
