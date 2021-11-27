@@ -195,6 +195,10 @@ module "network" {
   cidr_block         = var.cidr_block
 }
 
+module "business"{
+  source = "./modules/business"
+}
+
 #====================================
 
 # module "security" {

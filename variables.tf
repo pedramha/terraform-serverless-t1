@@ -1,15 +1,15 @@
-variable "key_name" {
-  type = string
-}
-
-# variable "workstation_ip" {
+# variable "key_name" {
 #   type = string
 # }
 
-variable "environment" {
-  type    = string
-  default = "demo"
-}
+# # variable "workstation_ip" {
+# #   type = string
+# # }
+
+# variable "environment" {
+#   type    = string
+#   default = "demo"
+# }
 
 variable "cidr_block" {
   type        = string
@@ -20,14 +20,14 @@ variable "availability_zones" {
   type = list(any)
 }
 
-variable "bastion_instance_type" {
-  type = string
-}
+# variable "bastion_instance_type" {
+#   type = string
+# }
 
-variable "app_instance_type" {
-  type = string
-}
+# variable "app_instance_type" {
+#   type = string
+# }
 
-variable "db_instance_type" {
-  type = string
-}
+# variable "db_instance_type" {
+#   type = string
+# }
