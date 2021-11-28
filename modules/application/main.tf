@@ -62,7 +62,20 @@ resource "aws_iam_role" "lambda_exec" {
       Principal = {
         Service = "lambda.amazonaws.com"
       }
-      }
+      },
+      {
+    "Effect": "Allow",
+    "Action": [
+     "dynamodb:BatchGetItem",
+     "dynamodb:GetItem",
+     "dynamodb:Query",
+     "dynamodb:Scan",
+     "dynamodb:BatchWriteItem",
+     "dynamodb:PutItem",
+     "dynamodb:UpdateItem"
+    ],
+    "Resource": "arn:aws:dynamodb:eu-central-1:833915806704:table/myDB"
+   }
     ]
   })
 }
@@ -82,13 +95,13 @@ resource "aws_dynamodb_table" "ddbtable" {
     type = "S"
   }
 }
-resource "aws_lambda_event_source_mapping" "event_source_mapping" {
-  batch_size        = 100
-  event_source_arn  = "${aws_dynamodb_table.ddbtable.arn}"
-  enabled           = true
-  function_name     = "${aws_lambda_function.crud.function_name}"
-  starting_position = "TRIM_HORIZON"
-}
+# resource "aws_lambda_event_source_mapping" "event_source_mapping" {
+#   batch_size        = 100
+#   event_source_arn  = "${aws_dynamodb_table.ddbtable.arn}"
+#   enabled           = true
+#   function_name     = "${aws_lambda_function.crud.function_name}"
+#   starting_position = "TRIM_HORIZON"
+# }
 //create dynamodb
 
 
