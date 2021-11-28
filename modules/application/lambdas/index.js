@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const db = new AWS.DynamoDB.DocumentClient();
+const stepfunctions= new AWS.StepFunctions();
 const TABLE_NAME = 'myDB';
 const PRIMARY_KEY = 'id';
 exports.handler = async (event = {}) => {
