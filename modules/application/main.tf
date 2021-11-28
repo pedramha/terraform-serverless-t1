@@ -50,25 +50,23 @@ resource "aws_cloudwatch_log_group" "crud" {
   retention_in_days = 30
 }
 
+
 resource "aws_iam_role" "lambda_exec" {
   name = "serverless_lambda"
 
   assume_role_policy = jsonencode(
     {
-    "Version": "2012-10-17",
-    "Statement": [
+      "Version": "2012-10-17",
+      "Statement": [
         {
-            "Sid": "VisualEditor0",
-            "Effect": "Allow",
-            "Action": [
-                "cloudwatch:*",
-                "logs:*",
-                "dynamodb:*"
-            ],
-            "Resource": "*"
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "lambda.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
         }
-    ]
-}
+      ]
+    }
   )
 }
 
