@@ -69,9 +69,34 @@ resource "aws_iam_role" "lambda_exec" {
   )
 }
 
+//policy for lambda to dynamo
+resource "aws_iam_policy" "lambda_dynamo" {
+  name = "serverless_lambda_dynamo"
+
+  policy = jsonencode(
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "dynamodb:DeleteItem",
+            "dynamodb:GetItem",
+            "dynamodb:PutItem",
+            "dynamodb:Query",
+            "dynamodb:Scan",
+            "dynamodb:UpdateItem"
+          ],
+          "Resource": "*"
+        }
+      ]
+    }
+  )
+}
+
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
   role       = aws_iam_role.lambda_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = aws_iam_policy.lambda_dynamo.arn
 }
 
 
@@ -85,13 +110,4 @@ resource "aws_dynamodb_table" "ddbtable" {
     name = "id"
     type = "S"
   }
-}
-
-//let lambda to connect to dynamodb
-resource "aws_lambda_permission" "lambda_dynamo" {
-  statement_id = "lambda_dynamo"
-  action       = "dynamodb:*"
-  function_name = "${aws_lambda_function.crud.function_name}"
-  principal    = "dynamodb.amazonaws.com"
-  source_arn   = aws_dynamodb_table.ddbtable.arn
 }
