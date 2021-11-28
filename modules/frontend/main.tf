@@ -14,9 +14,9 @@ resource "aws_s3_bucket" "static" {
     index_document = "index.html"
   }
 
-  versioning {
-    enabled = true
-  }
+#   versioning {
+#     enabled = true
+#   }
 
 
 }
