@@ -8,9 +8,6 @@
 //application module
 module "application" {
   source = "./modules/application"
-    tags = {
-    "env" = "dev"
-  }
 }
 
 resource "aws_api_gateway_rest_api" "restapi" {
@@ -24,9 +21,6 @@ resource "aws_api_gateway_resource" "resource" {
   rest_api_id = "${aws_api_gateway_rest_api.restapi.id}"
   parent_id = "${aws_api_gateway_rest_api.restapi.root_resource_id}"
   path_part = "my-resource"
-    tags = {
-    "env" = "dev"
-  }
 }
 //new method for the resource
 resource "aws_api_gateway_method" "method" {
@@ -34,9 +28,6 @@ resource "aws_api_gateway_method" "method" {
   resource_id = "${aws_api_gateway_resource.resource.id}"
   http_method = "POST"
   authorization = "NONE"
-    tags = {
-    "env" = "dev"
-  }
 }
 
 
@@ -74,9 +65,6 @@ resource "aws_apigatewayv2_route" "hello_world" {
 
   route_key = "GET /hello"
   target    = "integrations/${aws_apigatewayv2_integration.hello_world.id}"
-  tags = {
-    "env" = "dev"
-  }
 }
 
 resource "aws_lambda_permission" "api_gw" {
@@ -99,9 +87,7 @@ module "network" {
 
 module "business"{
   source = "./modules/business"
-    tags = {
-    "env" = "dev"
-  }
+
 }
 
 

@@ -28,6 +28,9 @@ resource "aws_s3_bucket_object" "crud_lambda" {
   source = data.archive_file.crud_lambda.output_path
 
   etag = filemd5(data.archive_file.crud_lambda.output_path)
+    tags = {
+    "env" = "dev"
+  }
 }
 
 resource "aws_lambda_function" "crud" {
@@ -42,6 +45,9 @@ resource "aws_lambda_function" "crud" {
   source_code_hash = data.archive_file.crud_lambda.output_base64sha256
 
   role = aws_iam_role.lambda_exec.arn
+    tags = {
+    "env" = "dev"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "crud" {
@@ -110,5 +116,8 @@ resource "aws_dynamodb_table" "ddbtable" {
   attribute {
     name = "id"
     type = "S"
+  }
+    tags = {
+    "env" = "dev"
   }
 }

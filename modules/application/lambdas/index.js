@@ -22,7 +22,7 @@ exports.handler = async (event = {}) => {
     var params = {
         stateMachineArn: 'arn:aws:states:eu-central-1:833915806704:stateMachine:my_state_machine', /* required */
         input: "{\"first_name\" : \"test\"}",
-        name: 'test',
+        name: ID,
         traceHeader: 'test'
       };
       console.log(params);
