@@ -25,8 +25,12 @@ exports.handler = async (event = {}) => {
         name: 'STRING_VALUE',
         traceHeader: 'STRING_VALUE'
       };
-      stepfunctions.startExecution(params, function(err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
-      });
+      console.log(params);
+    try {
+        //invoke stepfunction
+        const data = await stepfunctions.startExecution(params).promise();
+    }
+    catch (stepfunctionsError) {
+        return { statusCode: 500, body: JSON.stringify(stepfunctionsError) };
+    }
 };
