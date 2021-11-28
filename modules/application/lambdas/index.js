@@ -21,9 +21,9 @@ exports.handler = async (event = {}) => {
     //invoke step function
     var params = {
         stateMachineArn: 'arn:aws:states:eu-central-1:833915806704:stateMachine:my_state_machine', /* required */
-        input: 'STRING_VALUE',
-        name: 'STRING_VALUE',
-        traceHeader: 'STRING_VALUE'
+        input: "{\"first_name\" : \"test\"}",
+        name: 'test',
+        traceHeader: 'test'
       };
       console.log(params);
     try {

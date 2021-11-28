@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "eu-central-1"
+}
+
 //static website on s3
 resource "aws_s3_bucket" "www_bucket" {
   bucket = "www.pedokopp92iasd"
@@ -13,7 +17,7 @@ resource "aws_s3_bucket" "www_bucket" {
 
 # S3 bucket for redirecting non-www to www.
 resource "aws_s3_bucket" "root_bucket" {
-  bucket = var.bucket_name
-  acl    = "pedokopp92iasd"
+  bucket = "pedokopp92iasd"
+    acl    = "public-read"
   policy = templatefile("./s3-policy.json")
 }
