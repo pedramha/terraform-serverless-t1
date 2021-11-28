@@ -31,13 +31,13 @@ resource "aws_s3_bucket_object" "crud_lambda" {
 }
 
 resource "aws_lambda_function" "crud" {
-  function_name = "HelloWorld"
+  function_name = "lambda-crud"
 
   s3_bucket = aws_s3_bucket.lambda_bucket.id
   s3_key    = aws_s3_bucket_object.crud_lambda.key
 
   runtime = "nodejs12.x"
-  handler = "hello.handler"
+  handler = "index.handler"
 
   source_code_hash = data.archive_file.crud_lambda.output_base64sha256
 
@@ -54,30 +54,35 @@ resource "aws_iam_role" "lambda_exec" {
   name = "serverless_lambda"
 
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Sid    = ""
-      Principal = {
-        Service = "lambda.amazonaws.com"
-      }
-      },
-      {
-    "Effect": "Allow",
-    "Action": [
-     "dynamodb:BatchGetItem",
-     "dynamodb:GetItem",
-     "dynamodb:Query",
-     "dynamodb:Scan",
-     "dynamodb:BatchWriteItem",
-     "dynamodb:PutItem",
-     "dynamodb:UpdateItem"
-    ],
-    "Resource": "arn:aws:dynamodb:eu-central-1:833915806704:table/myDB"
-   }
-    ]
-  })
+	"Version": "2012-10-17",
+	"Statement": [{
+			"Effect": "Allow",
+			"Action": [
+				"dynamodb:BatchGetItem",
+				"dynamodb:GetItem",
+				"dynamodb:Query",
+				"dynamodb:Scan",
+				"dynamodb:BatchWriteItem",
+				"dynamodb:PutItem",
+				"dynamodb:UpdateItem"
+			],
+			"Resource": "arn:aws:dynamodb:eu-central-1:833915806704:table/myDB"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"logs:CreateLogStream",
+				"logs:PutLogEvents"
+			],
+			"Resource": "arn:aws:logs:u-central-1:833915806704:*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": "logs:CreateLogGroup",
+			"Resource": "*"
+		}
+	]
+})
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
