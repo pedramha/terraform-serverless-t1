@@ -6,7 +6,26 @@ provider "aws" {
 resource "aws_s3_bucket" "static" {
   bucket = "pedkopp92iasd.com"
   acl    = "public-read"
-    provisioner "local-exec" {
-     command = "aws s3 cp ./static ${aws_s3_bucket.static.id}"
+
+  provisioner "local-exec" {
+    command = "aws s3 sync static/ s3://pedkopp92iasd.com --acl public-read --delete"
   }
+
+  website {
+    index_document = "index.html"
+  }
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    id      = "delete-old-versions"
+    enabled = true
+    prefix  = "static"
+    expiration {
+      days = 365
+    }
+  }
+
 }
