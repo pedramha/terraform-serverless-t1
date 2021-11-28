@@ -6,7 +6,6 @@ provider "aws" {
 resource "aws_s3_bucket" "www_bucket" {
   bucket = "www.pedokopp92iasd"
   acl    = "public-read"
-  policy = templatefile("./s3-policy.json")
 
   website {
     index_document = "index.html"
@@ -19,5 +18,5 @@ resource "aws_s3_bucket" "www_bucket" {
 resource "aws_s3_bucket" "root_bucket" {
   bucket = "pedokopp92iasd"
     acl    = "public-read"
-  policy = templatefile("./s3-policy.json")
+
 }
