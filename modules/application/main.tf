@@ -38,7 +38,7 @@ resource "aws_lambda_function" "crud" {
 
   runtime = "nodejs12.x"
   handler = "index.handler"
-
+  
   source_code_hash = data.archive_file.crud_lambda.output_base64sha256
 
   role = aws_iam_role.lambda_exec.arn

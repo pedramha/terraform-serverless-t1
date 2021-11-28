@@ -5,8 +5,11 @@ const PRIMARY_KEY = 'id';
 exports.handler = async (event = {}) => {
     const ID = String.fromCharCode(65 + Math.floor(Math.random() * 26));
     const item = {
+        "TableName": TABLE_NAME,
+        "Item": {
             "id": ID,
             "Order": "toyota",
+        }
     };
     try {
         await db.put(item).promise();
