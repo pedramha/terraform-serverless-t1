@@ -53,36 +53,23 @@ resource "aws_cloudwatch_log_group" "crud" {
 resource "aws_iam_role" "lambda_exec" {
   name = "serverless_lambda"
 
-  assume_role_policy = jsonencode({
-	"Version": "2012-10-17",
-	"Statement": [{
-			"Effect": "Allow",
-			"Action": [
-				"dynamodb:BatchGetItem",
-				"dynamodb:GetItem",
-				"dynamodb:Query",
-				"dynamodb:Scan",
-				"dynamodb:BatchWriteItem",
-				"dynamodb:PutItem",
-				"dynamodb:UpdateItem"
-			],
-			"Resource": "arn:aws:dynamodb:eu-central-1:833915806704:table/myDB"
-		},
-		{
-			"Effect": "Allow",
-			"Action": [
-				"logs:CreateLogStream",
-				"logs:PutLogEvents"
-			],
-			"Resource": "arn:aws:logs:u-central-1:833915806704:*"
-		},
-		{
-			"Effect": "Allow",
-			"Action": "logs:CreateLogGroup",
-			"Resource": "*"
-		}
-	]
-})
+  assume_role_policy = jsonencode(
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:*",
+                "logs:*",
+                "dynamodb:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+  )
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
@@ -92,8 +79,8 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
 
 //create dynamodb table
 resource "aws_dynamodb_table" "ddbtable" {
-  name             = "myDB"
-  hash_key         = "id"
+  name         = "myDB"
+  hash_key     = "id"
   billing_mode = "PAY_PER_REQUEST"
   attribute {
     name = "id"
