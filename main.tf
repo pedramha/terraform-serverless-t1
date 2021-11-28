@@ -31,8 +31,6 @@ resource "aws_apigatewayv2_stage" "terraapi_stage" {
   }
 }
 
-
-
 resource "aws_apigatewayv2_integration" "hello_world" {
   api_id = aws_apigatewayv2_api.terraapi.id
 

@@ -3,6 +3,7 @@ module "vpc" {
 
   name = "CloudAcademy"
   cidr = var.cidr_block
+  
 
   azs             = var.availability_zones
   public_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
