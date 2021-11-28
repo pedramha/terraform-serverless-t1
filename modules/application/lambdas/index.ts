@@ -1,35 +1,26 @@
-import * as AWS from 'aws-sdk';
-import { v4 as uuidv4 } from 'uuid';
+// Load the AWS SDK for Node.js
+var AWS = require('aws-sdk');
+// Set the region 
 
-const TABLE_NAME = 'myDB';
-const PRIMARY_KEY = 'id';
+// Create the DynamoDB service object
+var ddb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 
-const db = new AWS.DynamoDB.DocumentClient();
-
-const RESERVED_RESPONSE = `Error: You're using AWS reserved keywords as attributes`,
-  DYNAMODB_EXECUTION_ERROR = `Error: Execution update, caused a Dynamodb error, please take a look at your CloudWatch Logs.`;
-
-export const handler = async (event: any = {}): Promise<any> => {
-
-  if (!event.body) {
-    return { statusCode: 400, body: 'invalid request, you are missing the parameter body' };
-  }
-  const item = typeof event.body == 'object' ? event.body : JSON.parse(event.body);
-  item[PRIMARY_KEY] = uuidv4();
-  const params = {
-    TableName: TABLE_NAME,
-    Item: item
-  };
-
-  try {
-    await db.put(params).promise();
-    return { statusCode: 201, body: '' };
-  } catch (dbError) {
-    const errorResponse = dbError.code === 'ValidationException' && dbError.message.includes('reserved keyword') ?
-      DYNAMODB_EXECUTION_ERROR : RESERVED_RESPONSE;
-    return { statusCode: 500, body: errorResponse };
+var params = {
+  TableName: 'myDB',
+  Item: {
+    'CUSTOMER_ID' : {N: '001'},
+    'CUSTOMER_NAME' : {S: 'Richard Roe'}
   }
 };
+
+// Call DynamoDB to add the item to the table
+ddb.putItem(params, function(err, data) {
+  if (err) {
+    console.log("Error", err);
+  } else {
+    console.log("Success", data);
+  }
+});
 
 // var AWS = require('aws-sdk');
 // var dynamo = new AWS.DynamoDB.DocumentClient();
