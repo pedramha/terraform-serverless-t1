@@ -76,6 +76,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
 resource "aws_dynamodb_table" "ddbtable" {
   name             = "myDB"
   hash_key         = "id"
+  billing_mode = "PAY_PER_REQUEST"
   attribute {
     name = "id"
     type = "S"

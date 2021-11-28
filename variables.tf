@@ -5,5 +5,5 @@ variable "cidr_block" {
 
 variable "availability_zones" {
   type = list(any)
-  default = [ "eu-central-1a", "eu-central" ]
+  default = [ "eu-central-1a", "eu-central-1b" ]
 }
