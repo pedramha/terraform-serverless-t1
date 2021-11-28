@@ -50,26 +50,6 @@ resource "aws_cloudwatch_log_group" "crud" {
   retention_in_days = 30
 }
 
-//aws_iam_role with full access to dynamodb
-resource "aws_iam_role" "dynamo_exec" {
-  name = "dynamo_exec"
-
-  assume_role_policy = jsonencode(
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "dynamodb.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-)
-}
 resource "aws_iam_role" "lambda_exec" {
   name = "serverless_lambda"
 
@@ -94,11 +74,6 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_iam_role_policy_attachment" "dynamo_policy" {
-  role       = aws_iam_role.dynamo_exec.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonDynamoDBFullAccess"
-}
-
 
 //create dynamodb table
 resource "aws_dynamodb_table" "ddbtable" {
@@ -111,4 +86,12 @@ resource "aws_dynamodb_table" "ddbtable" {
     type = "S"
   }
 }
-//role for dynamodb
+
+//let lambda to connect to dynamodb
+resource "aws_lambda_permission" "lambda_dynamo" {
+  statement_id = "lambda_dynamo"
+  action       = "dynamodb:*"
+  function_name = "${aws_lambda_function.crud.function_name}"
+  principal    = "dynamodb.amazonaws.com"
+  source_arn   = aws_dynamodb_table.ddbtable.arn
+}

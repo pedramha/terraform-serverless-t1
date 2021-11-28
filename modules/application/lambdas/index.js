@@ -3,7 +3,9 @@ const db = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = 'myDB';
 const PRIMARY_KEY = 'id';
 exports.handler = async (event = {}) => {
-    const item = typeof event.body == 'object' ? event.body : JSON.parse(event.body);
+    const js= {"test": "test"};
+
+    typeof event.body == 'object' ? event.body : JSON.parse(event.body);
     const ID = String.fromCharCode(65 + Math.floor(Math.random() * 26));
     item[PRIMARY_KEY] = ID;
     const params = {
