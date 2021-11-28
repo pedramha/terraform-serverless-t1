@@ -86,7 +86,7 @@ resource "aws_iam_policy" "lambda_dynamo" {
             "dynamodb:Query",
             "dynamodb:Scan",
             "dynamodb:UpdateItem",            
-            "stepfunctions:*"
+            "states:*"
           ],
           "Resource": "*"
         }
