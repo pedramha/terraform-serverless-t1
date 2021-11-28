@@ -18,13 +18,5 @@ resource "aws_s3_bucket" "static" {
     enabled = true
   }
 
-  lifecycle_rule {
-    id      = "delete-old-versions"
-    enabled = true
-    prefix  = "static"
-    expiration {
-      days = 365
-    }
-  }
 
 }
