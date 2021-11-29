@@ -3,11 +3,11 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "static" {
-  bucket = "pedkopp92iasd.com"
+  bucket = "pedramterraformsdemo.com"
   acl    = "public-read"
 
   provisioner "local-exec" {
-    command = "aws s3 sync static/ s3://pedkopp92iasd.com --acl public-read --delete"
+    command = "aws s3 sync static/ s3://pedramterraformsdemo.com --acl public-read --delete"
   }
 
   website {
