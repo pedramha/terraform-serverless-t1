@@ -1,6 +1,6 @@
-# provider "aws" {
-#   region = "eu-central-1"
-# }
+provider "aws" {
+  region = "eu-central-1"
+}
 
 # resource "aws_s3_bucket" "static" {
 #   bucket = "pedramterraformsdemo.com"
