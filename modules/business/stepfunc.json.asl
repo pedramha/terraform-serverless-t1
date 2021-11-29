@@ -1,14 +1,14 @@
 {
-  "Comment": "A Hello World example demonstrating various state types of the Amazon States Language",
-  "StartAt": "Pass",
+  "Comment": "smiple workflow for the car company",
+  "StartAt": "Order Received",
   "States": {
-    "Pass": {
-      "Comment": "A Pass state passes its input to its output, without performing work. Pass states are useful when constructing and debugging state machines.",
+    "Order Received": {
+      "Comment": "Order revieved.",
       "Type": "Pass",
       "Next": "SchufaPositive"
     },
     "SchufaPositive": {
-      "Comment": "A Choice state adds branching logic to a state machine. Choice rules can implement 16 different comparison operators, and can be combined using And, Or, and Not",
+      "Comment": "wihtout schufa no leasing possible",
       "Type": "Choice",
       "Choices": [
         {
@@ -33,7 +33,19 @@
       "Cause": "Not Hello World"
     },
     "organize pickup": {
-      "Comment": "A Wait state delays the state machine from continuing for a specified time.",
+      "Comment": "wait for client to pickup",
+      "Type": "Wait",
+      "Seconds": 3,
+      "Next": "wait for 6 months"
+    },
+    "wait for 6 months": {
+      "Comment": "wait for 6 months",
+      "Type": "Wait",
+      "Seconds": 3,
+      "Next": "organize return"
+    },
+    "organize return": {
+      "Comment": "wait for client to return",
       "Type": "Wait",
       "Seconds": 3,
       "Next": "Parallel State"
