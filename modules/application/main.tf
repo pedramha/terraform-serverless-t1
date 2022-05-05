@@ -180,11 +180,27 @@ resource "aws_api_gateway_integration" "get_integration" {
 }
 
 resource "aws_lambda_permission" "api_gw" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
+  statement_id = "AllowExecutionFromAPIGateway"
+  action       = "lambda:InvokeFunction"
 
   function_name = aws_lambda_function.crud.arn
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_api_gateway_rest_api.restapi.execution_arn}/*/*"
+}
+
+resource "aws_api_gateway_deployment" "apideployment" {
+  rest_api_id = aws_api_gateway_rest_api.restapi.id
+  
+}
+
+resource "aws_api_gateway_stage" "restapistage" {
+  rest_api_id = aws_api_gateway_rest_api.restapi.id
+  stage_name  = "production"
+  deployment_id = aws_api_gateway_deployment.apideployment.id
+  description = "this is the prod stage"
+  tags = {
+    "owner" = "pedram@hashicorp.com"
+    "env"   = "dev"
+  }
 }

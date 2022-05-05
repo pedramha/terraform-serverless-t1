@@ -28,6 +28,6 @@ output "invoke_arn" {
 }
 
 output "apig_url" {
-  value = aws_api_gateway_integration.get_integration.uri
+  value       = aws_api_gateway_stage.restapistage.invoke_url
   description = "endpoint"
 }
