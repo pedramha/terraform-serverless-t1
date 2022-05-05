@@ -26,7 +26,7 @@ resource "aws_s3_bucket" "static" {
   acl    = "public-read"
   
   provisioner "local-exec" {
-    command = "aws s3 sync static/ s3://${bucket_name}.com --acl public-read --delete"
+    command = "aws s3 sync static/ s3://${local.bucket_name}.com --acl public-read --delete"
   }
 
 website {
