@@ -1,23 +1,28 @@
 provider "aws" {
-    region      = "eu-central-1"
+  region = "eu-west-1"
 }
 
 
 module "lambda_function_existing_package_local" {
-  source = "terraform-aws-modules/lambda/aws"
+  source = "app.terraform.io/pedram-company/lambda/aws"
 
-  function_name = "my-lambda-existing-package-local"
-  description   = "My awesome lambda function"
-  runtime = "nodejs12.x"
-  handler = "index.handler"
+  function_name = "order-receiver-service"
+  description   = "microservice responsible for processing orders with private registry"
+  runtime       = "nodejs12.x"
+  handler       = "index.handler"
 
   create_package         = false
   local_existing_package = "${path.module}/lambdas.zip"
+
+  tags = {
+    "owner" = "pedram@hashicorp.com"
+    "env"   = "dev"
+  }
 }
 
 
 resource "random_pet" "lambda_bucket_name" {
-  prefix = "learn-terraform-functions"
+  prefix = "pedrams"
   length = 4
 }
 
@@ -26,6 +31,10 @@ resource "aws_s3_bucket" "lambda_bucket" {
 
   acl           = "private"
   force_destroy = true
+  tags = {
+    "owner" = "pedram@hashicorp.com"
+    "env"   = "dev"
+  }
 }
 
 data "archive_file" "crud_lambda" {
@@ -42,8 +51,9 @@ resource "aws_s3_bucket_object" "crud_lambda" {
   source = data.archive_file.crud_lambda.output_path
 
   etag = filemd5(data.archive_file.crud_lambda.output_path)
-    tags = {
-    "env" = "dev"
+  tags = {
+    "owner" = "pedram@hashicorp.com"
+    "env"   = "dev"
   }
 }
 
@@ -59,8 +69,9 @@ resource "aws_lambda_function" "crud" {
   source_code_hash = data.archive_file.crud_lambda.output_base64sha256
 
   role = aws_iam_role.lambda_exec.arn
-    tags = {
-    "env" = "dev"
+  tags = {
+    "owner" = "pedram@hashicorp.com"
+    "env"   = "dev"
   }
 }
 
@@ -75,14 +86,14 @@ resource "aws_iam_role" "lambda_exec" {
 
   assume_role_policy = jsonencode(
     {
-      "Version": "2012-10-17",
-      "Statement": [
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-          "Effect": "Allow",
-          "Principal": {
-            "Service": "lambda.amazonaws.com"
+          "Effect" : "Allow",
+          "Principal" : {
+            "Service" : "lambda.amazonaws.com"
           },
-          "Action": "sts:AssumeRole"
+          "Action" : "sts:AssumeRole"
         }
       ]
     }
@@ -95,20 +106,20 @@ resource "aws_iam_policy" "lambda_dynamo" {
 
   policy = jsonencode(
     {
-      "Version": "2012-10-17",
-      "Statement": [
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-          "Effect": "Allow",
-          "Action": [
+          "Effect" : "Allow",
+          "Action" : [
             "dynamodb:DeleteItem",
             "dynamodb:GetItem",
             "dynamodb:PutItem",
             "dynamodb:Query",
             "dynamodb:Scan",
-            "dynamodb:UpdateItem",            
+            "dynamodb:UpdateItem",
             "states:*"
           ],
-          "Resource": "*"
+          "Resource" : "*"
         }
       ]
     }
@@ -131,7 +142,8 @@ resource "aws_dynamodb_table" "ddbtable" {
     name = "id"
     type = "S"
   }
-    tags = {
-    "env" = "dev"
+  tags = {
+    "owner" = "pedram@hashicorp.com"
+    "env"   = "dev"
   }
 }
