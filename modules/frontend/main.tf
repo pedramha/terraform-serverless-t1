@@ -21,7 +21,7 @@ locals {
 # }
 
 resource "aws_s3_bucket" "static" {
-  bucket = "pedramterraformexercie.com"
+  bucket = "local.bucket_name"
   acl    = "public-read"
   
   provisioner "local-exec" {

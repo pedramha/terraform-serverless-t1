@@ -2,6 +2,20 @@ provider "aws" {
   region = "eu-central-1"
 }
 
+
+module "lambda_function_existing_package_local" {
+  source = "terraform-aws-modules/lambda/aws"
+
+  function_name = "my-lambda-existing-package-local"
+  description   = "My awesome lambda function"
+  runtime = "nodejs12.x"
+  handler = "index.handler"
+
+  create_package         = false
+  local_existing_package = "existing_package.zip"
+}
+
+
 resource "random_pet" "lambda_bucket_name" {
   prefix = "learn-terraform-functions"
   length = 4
