@@ -166,14 +166,14 @@ resource "aws_api_gateway_resource" "apiresource" {
 resource "aws_api_gateway_method" "apimethod" {
   rest_api_id   = aws_api_gateway_rest_api.restapi.id
   resource_id   = aws_api_gateway_resource.apiresource.id
-  http_method   = "POST"
+  http_method   = "GET"
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_integration" "get_integration" {
   rest_api_id             = aws_api_gateway_rest_api.restapi.id
   resource_id             = aws_api_gateway_resource.apiresource.id
-  http_method             = aws_api_gateway_method.apimethod.id
+  http_method             = aws_api_gateway_method.apimethod
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.crud.invoke_arn
