@@ -4,9 +4,8 @@ provider "aws" {
     region = "eu-central-1"
 }
 
-
 resource "aws_cloudwatch_dashboard" "lambdadash" {
-    dashboard_name = "lambda-dashboard"
+    dashboard_name = "lambda-dashboard-pedram"
     dashboard_body = <<EOF
 {
     "widgets": [
@@ -44,8 +43,8 @@ resource "aws_cloudwatch_dashboard" "lambdadash" {
                         "key": "FunctionName"
                     },
                     {
-                        "key": "env",
-                        "value": "dev"
+                        "key": "owner",
+                        "value": "pedram@hashicorp.com"
                     }
                 ],
                 "widgetOptions": {
@@ -59,7 +58,7 @@ resource "aws_cloudwatch_dashboard" "lambdadash" {
                 },
                 "period": 300,
                 "splitBy": "Runtime",
-                "region": "eu-central-1"
+                "region": "eu-west-1"
             }
         }
     ]
