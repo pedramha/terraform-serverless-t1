@@ -178,3 +178,13 @@ resource "aws_api_gateway_integration" "get_integration" {
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.crud.invoke_arn
 }
+
+resource "aws_lambda_permission" "api_gw" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+
+  function_name = aws_lambda_function.crud.arn
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_rest_api.restapi.execution_arn}/*/*"
+}

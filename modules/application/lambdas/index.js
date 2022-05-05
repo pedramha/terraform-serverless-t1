@@ -20,7 +20,7 @@ exports.handler = async (event = {}) => {
     }
     //invoke step function
     var params = {
-        stateMachineArn: 'arn:aws:states:eu-central-1:833915806704:stateMachine:my_state_machine', /* required */
+        stateMachineArn: 'arn:aws:states:eu-west-1:833915806704:stateMachine:my_state_machine', 
         input: "{\"risk\" : true}",
         name: ID,
         traceHeader: 'test'
