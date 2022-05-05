@@ -176,5 +176,5 @@ resource "aws_api_gateway_integration" "get_integration" {
   http_method             = aws_api_gateway_method.apimethod.id
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = lambda_function_existing_package_local.lambda_function_invoke_arn
+  uri                     = aws_lambda_function.crud.invoke_arn
 }
