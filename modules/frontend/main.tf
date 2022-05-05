@@ -1,10 +1,9 @@
 provider "aws" {
-  
+    region      = "eu-west-1"
 }
 
 locals {
   bucket_name = "s3-bucket-pedram-company-website"
-  region      = "eu-west-1"
 }
 
 # module "s3-bucket" {
