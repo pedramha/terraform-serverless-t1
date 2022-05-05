@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 locals {
-  bucket_name = "s3-bucket-pedram-company-website"
+  bucket_name = "s3-bucket-pedram-company-website.com"
 }
 
 # module "s3-bucket" {
@@ -25,7 +25,7 @@ resource "aws_s3_bucket" "static" {
   acl    = "public-read"
   
   provisioner "local-exec" {
-    command = "aws s3 sync static/ s3://${local.bucket_name}.com --acl public-read --delete"
+    command = "aws s3 sync static/ s3://${local.bucket_name} --acl public-read --delete"
   }
 
 website {
