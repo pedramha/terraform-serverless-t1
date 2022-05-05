@@ -9,7 +9,6 @@ locals {
 
 module "s3-bucket" {
   source  = "app.terraform.io/pedram-company/s3-bucket/aws"
-  version = "3.2.0"
   tags{
     Owner = "pedramhamidehkhan"
   }
