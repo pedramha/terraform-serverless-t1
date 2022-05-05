@@ -1,5 +1,5 @@
 {
-  "Comment": "smiple workflow for the car company",
+  "Comment": "Simple workflow for a car subscription company",
   "StartAt": "Order Received",
   "States": {
     "Order Received": {
