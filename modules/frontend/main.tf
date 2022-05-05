@@ -1,3 +1,7 @@
+provider "aws" {
+  
+}
+
 locals {
   bucket_name = "s3-bucket-pedram-company-website"
   region      = "eu-west-1"
