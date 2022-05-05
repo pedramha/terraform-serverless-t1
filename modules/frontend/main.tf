@@ -21,7 +21,7 @@ locals {
 # }
 
 resource "aws_s3_bucket" "static" {
-  bucket = "local.bucket_name"
+  bucket = "${local.bucket_name}"
   acl    = "public-read"
   
   provisioner "local-exec" {
