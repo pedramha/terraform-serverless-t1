@@ -1,9 +1,7 @@
 //monitoring with terraform
-
 provider "aws" {
-    region = "eu-central-1"
+    region      = "eu-west-1"
 }
-
 resource "aws_cloudwatch_dashboard" "lambdadash" {
     dashboard_name = "lambda-dashboard-pedram"
     dashboard_body = <<EOF
