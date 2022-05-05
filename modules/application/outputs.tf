@@ -27,7 +27,7 @@ output "invoke_arn" {
   value       = aws_lambda_function.crud.invoke_arn
 }
 
-# output "role_name" {
-#   description = "The name of the IAM attached to the Lambda Function."
-#   value       = aws_iam_role.lambda.name
-# }
+output "apig_url" {
+  value = aws_api_gateway_integration.get_integration.uri
+  description = "endpoint"
+}
